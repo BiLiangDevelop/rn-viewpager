@@ -24,10 +24,22 @@ ViewPager and Indicator component for react-native on both android and ios. View
 ## Build and run the demo
 
 ```  
-cd demo/
+cd RNViewPagerDemo/
 npm install
 react-native run-ios
 ```
+
+## Component API
+
+[`<ViewPager />` Component API](docs/viewpager.md)
+
+[`<IndicatorViewPager />` Component API](docs/indicatorviewpager.md)
+
+[`<PagerDotIndicator />` Component API](docs/dotindicator.md)
+
+[`<PagerTabIndicator />` Component API](docs/tabindicator.md)
+
+[`<PagerTitleIndicator />` Component API](docs/titleindicator.md)
 
 ## Usage
 
@@ -40,7 +52,7 @@ react-native run-ios
 
 import {StyleSheet, View, Text} from 'react-native';
 import React, {Component} from 'react';
-import {IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
+import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator} from 'rn-viewpager';
 
 export default class ViewPagerPage extends Component {
     render() {
@@ -62,7 +74,7 @@ export default class ViewPagerPage extends Component {
                 </IndicatorViewPager>
 
                 <IndicatorViewPager
-                    style={{flex:1,marginTop:10}}
+					style={{flex:1, paddingTop:20, backgroundColor:'white'}}
                     indicator={this._renderTitleIndicator()}
                 >
                     <View style={{backgroundColor:'cadetblue'}}>
@@ -77,7 +89,7 @@ export default class ViewPagerPage extends Component {
                 </IndicatorViewPager>
                 
                 <IndicatorViewPager
-                    style={{flex:1,marginTop:10}}
+					style={{flex:1, paddingTop:20, backgroundColor:'white'}}
                     indicator={this._renderTabIndicator()}
                 >
                     <View style={{backgroundColor:'cadetblue'}}>
