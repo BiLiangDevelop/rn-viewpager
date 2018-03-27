@@ -4,22 +4,23 @@
 
 'use strict'
 
-import React, { Component, PropTypes } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import React, {Component} from 'react'
+import {StyleSheet, View, Text, TouchableOpacity, ViewPropTypes} from 'react-native'
 import IndicatorViewPager from '../IndicatorViewPager'
+import PropTypes from 'prop-types';
 
 export default class PagerTitleIndicator extends Component {
     static propTypes = {
-        ...View.propTypes,
+        ...ViewPropTypes,
         initialPage: PropTypes.number,
         pager: PropTypes.instanceOf(IndicatorViewPager),
         titles: PropTypes.arrayOf(PropTypes.string).isRequired,
-        itemStyle: View.propTypes.style,
-        selectedItemStyle: View.propTypes.style,
-        itemTextStyle: Text.propTypes.style,
-        selectedItemTextStyle: Text.propTypes.style,
-        selectedBorderStyle: View.propTypes.style,
-        renderTitle: React.PropTypes.func
+        itemStyle: ViewPropTypes.style,
+        selectedItemStyle: ViewPropTypes.style,
+        itemTextStyle: ViewPropTypes.style,
+        selectedItemTextStyle: ViewPropTypes.style,
+        selectedBorderStyle: ViewPropTypes.style,
+        renderTitle: PropTypes.func
     }
 
     static defaultProps = {
@@ -31,7 +32,7 @@ export default class PagerTitleIndicator extends Component {
         selectedIndex: this.props.initialPage
     }
 
-    shouldComponentUpdate (nextProps, nextState) {
+    shouldComponentUpdate(nextProps, nextState) {
         return this.state.selectedIndex != nextState.selectedIndex ||
             this.props.titles + '' != nextProps.titles + '' ||
             this.props.style != nextProps.style ||
@@ -41,15 +42,16 @@ export default class PagerTitleIndicator extends Component {
             this.props.selectedBorderStyle != nextProps.selectedBorderStyle
     }
 
-    render () {
+    render() {
         let {titles, pager, itemStyle, selectedItemStyle, itemTextStyle, selectedItemTextStyle, selectedBorderStyle} = this.props
-        if (!titles || titles.length === 0)return null
+        if (!titles || titles.length === 0) return null
 
         let titleViews = titles.map((title, index) => {
             let isSelected = this.state.selectedIndex === index
 
             const titleView = this.props.renderTitle ? this.props.renderTitle(index, title, isSelected) : (
-                <Text style={isSelected ? [styles.titleTextSelected, selectedItemTextStyle] : [styles.titleText, itemTextStyle]} >
+                <Text
+                    style={isSelected ? [styles.titleTextSelected, selectedItemTextStyle] : [styles.titleText, itemTextStyle]}>
                     {title}
                 </Text>
             )
@@ -59,21 +61,23 @@ export default class PagerTitleIndicator extends Component {
                     style={[styles.titleContainer, isSelected ? selectedItemStyle : itemStyle]}
                     activeOpacity={0.6}
                     key={index}
-                    onPress={() => {!isSelected && pager.setPage(index)}}
+                    onPress={() => {
+                        !isSelected && pager.setPage(index)
+                    }}
                 >
                     {titleView}
-                    {isSelected ? <View style={[styles.selectedBorder, selectedBorderStyle]} /> : null}
+                    {isSelected ? <View style={[styles.selectedBorder, selectedBorderStyle]}/> : null}
                 </TouchableOpacity>
             )
         })
         return (
-            <View style={[styles.indicatorContainer, this.props.style]} >
+            <View style={[styles.indicatorContainer, this.props.style]}>
                 {titleViews}
             </View>
         )
     }
 
-    onPageSelected (e) {
+    onPageSelected(e) {
         this.setState({selectedIndex: e.position})
     }
 }

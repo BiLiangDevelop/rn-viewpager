@@ -3,20 +3,21 @@
  */
 
 'use strict'
-import React, { Component, PropTypes } from 'react'
-import { StyleSheet, View } from 'react-native'
+import React, {Component} from 'react'
+import {StyleSheet, View, ViewPropTypes} from 'react-native'
 import IndicatorViewPager from '../IndicatorViewPager'
+import PropTypes from 'prop-types';
 
 const DEFAULT_DOT_RADIUS = 6
 export default class PagerDotIndicator extends Component {
     static propTypes = {
-        ...View.propTypes,
+        ...ViewPropTypes,
         pageCount: PropTypes.number.isRequired,
         initialPage: PropTypes.number,
         pager: PropTypes.instanceOf(IndicatorViewPager),
-        dotStyle: View.propTypes.style,
-        selectedDotStyle: View.propTypes.style,
-        hideSingle: React.PropTypes.bool
+        dotStyle: ViewPropTypes.style,
+        selectedDotStyle: ViewPropTypes.style,
+        hideSingle: PropTypes.bool
     }
 
     static defaultProps = {
@@ -29,7 +30,7 @@ export default class PagerDotIndicator extends Component {
         selectedIndex: this.props.initialPage
     }
 
-    shouldComponentUpdate (nextProps, nextState) {
+    shouldComponentUpdate(nextProps, nextState) {
         return this.state.selectedIndex != nextState.selectedIndex ||
             this.props.pageCount != nextProps.pageCount ||
             this.props.dotStyle != nextProps.dotStyle ||
@@ -38,8 +39,8 @@ export default class PagerDotIndicator extends Component {
     }
 
     render() {
-        let {pageCount, dotStyle, selectedDotStyle}=this.props;
-        if (pageCount <= 0)return null;
+        let {pageCount, dotStyle, selectedDotStyle} = this.props;
+        if (pageCount <= 0) return null;
         if (this.props.hideSingle && pageCount == 1) return null;
         let dotsView = [];
         for (let i = 0; i < pageCount; i++) {
@@ -52,13 +53,13 @@ export default class PagerDotIndicator extends Component {
             )
         }
         return (
-            <View {...this.props} style={[styles.container, this.props.style]} >
+            <View {...this.props} style={[styles.container, this.props.style]}>
                 {dotsView}
             </View>
         )
     }
 
-    onPageSelected (e) {
+    onPageSelected(e) {
         this.setState({selectedIndex: e.position})
     }
 }

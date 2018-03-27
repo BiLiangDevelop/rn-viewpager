@@ -4,9 +4,10 @@
 
 'use strict'
 
-import React, { Component, PropTypes } from 'react'
-import { StyleSheet, View } from 'react-native'
+import React, {Component} from 'react'
+import {StyleSheet, View, ViewPropTypes} from 'react-native'
 import ViewPager from './ViewPager'
+import PropTypes from 'prop-types';
 
 const VIEWPAGER_REF = 'viewPager'
 const INDICATOR_REF = 'indicator'
@@ -14,7 +15,7 @@ export default class IndicatorViewPager extends Component {
     static propTypes = {
         ...ViewPager.propTypes,
         indicator: PropTypes.node,
-        pagerStyle: View.propTypes.style,
+        pagerStyle: ViewPropTypes.style,
         autoPlayEnable: PropTypes.bool,
         autoPlayInterval: PropTypes.number
     }
@@ -26,7 +27,7 @@ export default class IndicatorViewPager extends Component {
         autoPlayEnable: false
     }
 
-    constructor (props) {
+    constructor(props) {
         super(props)
         this._onPageScroll = this._onPageScroll.bind(this)
         this._onPageSelected = this._onPageSelected.bind(this)
@@ -40,21 +41,21 @@ export default class IndicatorViewPager extends Component {
         this._childrenCount = React.Children.count(props.children)
     }
 
-    componentDidMount () {
+    componentDidMount() {
         if (this.props.autoPlayEnable) this._startAutoPlay()
         else this._stopAutoPlay()
     }
 
-    componentWillUpdate (nextProps, nextState) {
+    componentWillUpdate(nextProps, nextState) {
         this._childrenCount = React.Children.count(nextProps.children)
         if (this.props.autoPlayEnable !== nextProps.autoPlayEnable) {
             nextProps.autoPlayEnable ? this._startAutoPlay() : this._stopAutoPlay()
         }
     }
 
-    render () {
+    render() {
         return (
-            <View style={[styles.container, this.props.style]} >
+            <View style={[styles.container, this.props.style]}>
                 <ViewPager
                     {...this.props}
                     ref={VIEWPAGER_REF}
@@ -67,26 +68,26 @@ export default class IndicatorViewPager extends Component {
         )
     }
 
-    componentWillUnmount () {
+    componentWillUnmount() {
         this._stopAutoPlay()
     }
 
-    _onPageScroll (params) {
+    _onPageScroll(params) {
         let indicator = this.refs[INDICATOR_REF]
         indicator && indicator.onPageScroll && indicator.onPageScroll(params)
         this.props.onPageScroll && this.props.onPageScroll(params)
     }
 
-    _onPageSelected (params) {
+    _onPageSelected(params) {
         let indicator = this.refs[INDICATOR_REF]
         indicator && indicator.onPageSelected && indicator.onPageSelected(params)
         this.props.onPageSelected && this.props.onPageSelected(params)
         this._currentIndex = params.position
     }
 
-    _renderIndicator () {
+    _renderIndicator() {
         let {indicator, initialPage} = this.props
-        if (!indicator)return null
+        if (!indicator) return null
         return React.cloneElement(indicator, {
             ref: INDICATOR_REF,
             pager: this,
@@ -94,28 +95,28 @@ export default class IndicatorViewPager extends Component {
         })
     }
 
-    _goToNextPage () {
+    _goToNextPage() {
         let nextIndex = (this._currentIndex + 1) % this._childrenCount
         this.setPage(nextIndex)
     }
 
-    _startAutoPlay () {
+    _startAutoPlay() {
         if (this._timerId) clearInterval(this._timerId)
         this._timerId = setInterval(this._goToNextPage, this.props.autoPlayInterval)
     }
 
-    _stopAutoPlay () {
+    _stopAutoPlay() {
         if (this._timerId) {
             clearInterval(this._timerId)
             this._timerId = null
         }
     }
 
-    setPage (selectedPage) {
+    setPage(selectedPage) {
         this.refs[VIEWPAGER_REF].setPage(selectedPage)
     }
 
-    setPageWithoutAnimation (selectedPage) {
+    setPageWithoutAnimation(selectedPage) {
         this.refs[VIEWPAGER_REF].setPageWithoutAnimation(selectedPage)
     }
 }

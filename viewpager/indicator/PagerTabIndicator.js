@@ -3,26 +3,27 @@
  */
 
 'use strict'
-import React, { Component, PropTypes } from 'react'
-import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native'
+import React, {Component} from 'react'
+import {StyleSheet, View, Image, Text, TouchableOpacity, ViewPropTypes} from 'react-native'
 import IndicatorViewPager from '../IndicatorViewPager'
+import PropTypes from 'prop-types';
 
 export default class PagerTabIndicator extends Component {
     static propTypes = {
-        ...View.propTypes,
+        ...ViewPropTypes,
         initialPage: PropTypes.number,
         pager: PropTypes.instanceOf(IndicatorViewPager),
         tabs: PropTypes.arrayOf(PropTypes.shape({
             text: PropTypes.string,
-            iconSource: Image.propTypes.source,
-            selectedIconSource: Image.propTypes.source
+            iconSource: ViewPropTypes.source,
+            selectedIconSource: ViewPropTypes.source
         })).isRequired,
-        itemStyle: View.propTypes.style,
-        selectedItemStyle: View.propTypes.style,
-        iconStyle: Image.propTypes.style,
-        selectedIconStyle: Image.propTypes.style,
-        textStyle: Text.propTypes.style,
-        selectedTextStyle: Text.propTypes.style
+        itemStyle: ViewPropTypes.style,
+        selectedItemStyle: ViewPropTypes.style,
+        iconStyle: ViewPropTypes.style,
+        selectedIconStyle: ViewPropTypes.style,
+        textStyle: ViewPropTypes.style,
+        selectedTextStyle: ViewPropTypes.style
     }
 
     static defaultProps = {
@@ -33,7 +34,7 @@ export default class PagerTabIndicator extends Component {
         selectedIndex: this.props.initialPage
     }
 
-    render () {
+    render() {
         let {
             tabs, pager, style, itemStyle, selectedItemStyle, iconStyle,
             selectedIconStyle, textStyle, selectedTextStyle
@@ -47,7 +48,9 @@ export default class PagerTabIndicator extends Component {
                     style={[styles.itemContainer, isSelected ? selectedItemStyle : itemStyle]}
                     activeOpacity={0.6}
                     key={index}
-                    onPress={() => {!isSelected && pager.setPage(index)}}
+                    onPress={() => {
+                        !isSelected && pager.setPage(index)
+                    }}
                 >
                     <Image
                         style={[styles.image, isSelected ? selectedIconStyle : iconStyle]}
@@ -62,13 +65,13 @@ export default class PagerTabIndicator extends Component {
             )
         })
         return (
-            <View style={[styles.container, style]} >
+            <View style={[styles.container, style]}>
                 {tabsView}
             </View>
         )
     }
 
-    onPageSelected (e) {
+    onPageSelected(e) {
         this.setState({selectedIndex: e.position})
     }
 }
